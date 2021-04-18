@@ -2,24 +2,24 @@ package com.imadelfetouh.moderatorservice.rabbit.consumer;
 
 import com.imadelfetouh.moderatorservice.rabbit.Monitor;
 import com.imadelfetouh.moderatorservice.rabbit.NonStopConsumer;
-import com.imadelfetouh.moderatorservice.rabbit.delivercallback.AddUserDeliverCallback;
 import com.rabbitmq.client.Channel;
 import com.rabbitmq.client.DeliverCallback;
 
-import java.io.IOException;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 
-public class AddUserConsumer implements NonStopConsumer {
+public class DefaultConsumer implements NonStopConsumer {
 
-    private static final Logger logger = Logger.getLogger(AddUserConsumer.class.getName());
+    private static final Logger logger = Logger.getLogger(DefaultConsumer.class.getName());
 
     private final String queue_name;
     private final String exchange_name;
+    private final DeliverCallback deliverCallback;
 
-    public AddUserConsumer() {
-        queue_name = "moderatorservice_adduserconsumer";
-        exchange_name = "adduserexchange";
+    public DefaultConsumer(String queue_name, String exchange_name, DeliverCallback deliverCallback) {
+        this.queue_name = queue_name;
+        this.exchange_name = exchange_name;
+        this.deliverCallback = deliverCallback;
     }
 
     @Override
@@ -29,14 +29,12 @@ public class AddUserConsumer implements NonStopConsumer {
             channel.exchangeDeclare(exchange_name, "direct", true);
             channel.queueBind(queue_name, exchange_name, "");
 
-            DeliverCallback deliverCallback = new AddUserDeliverCallback();
-
             channel.basicConsume(queue_name, true, deliverCallback, s -> {});
 
             Monitor monitor = new Monitor();
             monitor.start();
         }
-        catch (IOException e) {
+        catch (Exception e) {
             logger.log(Level.ALL, e.getMessage());
         }
     }
