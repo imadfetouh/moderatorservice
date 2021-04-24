@@ -11,10 +11,9 @@ public class User implements Serializable {
 
     }
 
-    public User(String userId, String username, String password, Role role, String photo, Profile profile) {
+    public User(String userId, String username, Role role, String photo, Profile profile) {
         this.userId = userId;
         this.username = username;
-        this.password = password;
         this.role = role;
         this.photo = photo;
         this.profile = profile;
@@ -30,9 +29,6 @@ public class User implements Serializable {
 
     @Column(name = "username")
     private String username;
-
-    @Column(name = "password")
-    private String password;
 
     @Enumerated(EnumType.STRING)
     @Column(name = "role")

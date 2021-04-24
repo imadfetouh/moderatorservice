@@ -6,15 +6,13 @@ public class NewUserDTO implements Serializable {
 
     private String userId;
     private String username;
-    private String password;
     private String role;
     private String photo;
     private ProfileDTO profile;
 
-    public NewUserDTO(String userId, String username, String password, String role, String photo, ProfileDTO profile) {
+    public NewUserDTO(String userId, String username, String role, String photo, ProfileDTO profile) {
         this.userId = userId;
         this.username = username;
-        this.password = password;
         this.role = role;
         this.photo = photo;
         this.profile = profile;
@@ -34,14 +32,6 @@ public class NewUserDTO implements Serializable {
 
     public String getUsername() {
         return username;
-    }
-
-    public void setPassword(String password) {
-        this.password = password;
-    }
-
-    public String getPassword() {
-        return password;
     }
 
     public void setRole(String role) {

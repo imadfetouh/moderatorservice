@@ -23,7 +23,7 @@ public class AddUserExecuter implements QueryExecuter<Void> {
 
         Profile profile = new Profile(newUserDTO.getProfile().getProfileId(), newUserDTO.getProfile().getBio(), newUserDTO.getProfile().getLocation(), newUserDTO.getProfile().getWebsite());
 
-        User user = new User(newUserDTO.getUserId(), newUserDTO.getUsername(), newUserDTO.getPassword(), Role.valueOf(newUserDTO.getRole()), newUserDTO.getPhoto(), profile);
+        User user = new User(newUserDTO.getUserId(), newUserDTO.getUsername(), Role.valueOf(newUserDTO.getRole()), newUserDTO.getPhoto(), profile);
 
         session.persist(profile);
         session.persist(user);
