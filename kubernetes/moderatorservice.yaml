@@ -1,0 +1,57 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: moderatorservice-deployment
+  labels:
+    app: moderatorservice
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: moderatorservice
+  template:
+    metadata:
+      labels:
+        app: moderatorservice
+    spec:
+      containers:
+        - name: moderatorservice
+          imagePullPolicy: Always
+          image: imadelfetouh99/moderatorservice:latest
+          ports:
+            - containerPort: 8086
+          env:
+            - name: MODERATORSERVICE_MYSQL_MASTER_HOST
+              value: mysql-moderatorservice-master-service
+            - name: MODERATORSERVICE_MYSQL_REPLICA_HOST
+              value: mysql-moderatorservice-master-service
+            - name: MODERATORSERVICE_MYSQL_MASTER_PORT
+              value: '3321'
+            - name: MODERATORSERVICE_MYSQL_REPLICA_PORT
+              value: '3321'
+            - name: MYSQL_USER
+              value: root
+            - name: MYSQL_PASS
+              valueFrom:
+                secretKeyRef:
+                  name: mysql
+                  key: password
+            - name: RABBIT_HOST
+              value: rabbit-service
+            - name: secretkey
+              value: secretkeyforkwetterimadinjwt@semester6
+          resources:
+            limits:
+              memory: 256Mi
+              cpu: 100m
+---
+apiVersion: v1
+kind: Service
+metadata:
+  name: moderatorservice-service
+spec:
+  selector:
+    app: moderatorservice
+  ports:
+    - port: 8086
+      targetPort: 8086

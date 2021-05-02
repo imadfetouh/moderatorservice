@@ -13,7 +13,7 @@ import javax.servlet.http.HttpServletResponse;
 import java.io.IOException;
 import java.util.Arrays;
 
-//@Component
+@Component
 public class CookieFilter implements Filter {
 
     @Override
@@ -36,9 +36,11 @@ public class CookieFilter implements Filter {
                 if(u.getRole().equals(Role.MODERATOR.name()) || u.getRole().equals(Role.ADMINISTRATOR.name())) {
                     httpServletRequest.setAttribute("userdata", userData);
                     filterChain.doFilter(httpServletRequest, httpServletResponse);
+                    return;
                 }
                 else{
                     httpServletResponse.setStatus(401);
+                    return;
                 }
             }
         }
