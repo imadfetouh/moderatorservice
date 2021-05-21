@@ -4,6 +4,7 @@ import com.google.gson.Gson;
 import com.imadelfetouh.moderatorservice.dal.ormmodel.Role;
 import com.imadelfetouh.moderatorservice.jwt.ValidateJWTToken;
 import com.imadelfetouh.moderatorservice.model.jwt.UserData;
+import com.imadelfetouh.moderatorservice.rabbit.RabbitConfiguration;
 import org.springframework.stereotype.Component;
 
 import javax.servlet.*;
@@ -32,8 +33,19 @@ public class CookieFilter implements Filter {
                 String userData = ValidateJWTToken.getInstance().getUserData(cookie.getValue());
                 Gson gson = new Gson();
 
+                if(userData == null) {
+                    httpServletResponse.setStatus(401);
+                    return;
+                }
+
                 UserData u = gson.fromJson(userData, UserData.class);
+
                 if(u.getRole().equals(Role.MODERATOR.name()) || u.getRole().equals(Role.ADMINISTRATOR.name())) {
+                    if(RabbitConfiguration.getInstance().getConnection() == null && !httpServletRequest.getMethod().equals("GET")) {
+                        httpServletResponse.setStatus(503);
+                        return;
+                    }
+
                     httpServletRequest.setAttribute("userdata", userData);
                     filterChain.doFilter(httpServletRequest, httpServletResponse);
                     return;

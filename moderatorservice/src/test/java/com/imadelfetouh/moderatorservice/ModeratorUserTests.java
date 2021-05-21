@@ -31,7 +31,7 @@ public class ModeratorUserTests {
     @BeforeAll
     static void setupDatabase() {
         Executer<Void> executer = new Executer<>(SessionType.WRITE);
-        executer.execute(new SetupDatabase());
+        executer.execute(new SetupTestDatabase());
 
         Channel channel = RabbitConfiguration.getInstance().getChannel();
         AMQP.BasicProperties properties = new AMQP.BasicProperties().builder().correlationId("testcorr").build();
