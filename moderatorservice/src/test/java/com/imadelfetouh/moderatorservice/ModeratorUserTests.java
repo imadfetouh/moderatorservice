@@ -1,4 +1,4 @@
-package com.imadelfetouh.adminservice;
+package com.imadelfetouh.moderatorservice;
 
 import com.google.gson.Gson;
 import com.google.gson.JsonObject;
@@ -38,11 +38,11 @@ public class ModeratorUserTests {
 
         try {
             String user1 = new JSONObject()
-                    .put("userId", "u123").put("username", "imad").put("password", "imad").put("role", "USER").put("photo", "imad.jpg")
+                    .put("userId", "u123").put("username", "imad").put("password", PasswordHash.getInstance().hash("imad")).put("role", "USER").put("photo", "imad.jpg")
                     .put("profile", new JSONObject().put("profileId", "p123").put("bio", "Hello").put("location", "Helmond").put("website", "imad.nl")).toString();
 
             String user2 = new JSONObject()
-                    .put("userId", "u1234").put("username", "peter").put("password", "peter").put("role", "USER").put("photo", "peter.jpg")
+                    .put("userId", "u1234").put("username", "peter").put("password", PasswordHash.getInstance().hash("peter")).put("role", "USER").put("photo", "peter.jpg")
                     .put("profile", new JSONObject().put("profileId", "p1234").put("bio", "Hello").put("location", "Helmond").put("website", "peter.nl")).toString();
 
             channel.basicPublish("adduserexchange", "", properties, user1.getBytes());
