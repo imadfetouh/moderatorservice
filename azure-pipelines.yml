@@ -52,5 +52,5 @@ steps:
   inputs:
     action: 'deploy'
     kubernetesServiceConnection: 'kube_kwetterimad'
-    manifests: 'kubernetes/followingservice.yaml'
+    manifests: 'kubernetes/moderatorservice.yaml'
 
